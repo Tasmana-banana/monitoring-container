@@ -11,6 +11,7 @@ global:
 
 # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
 rule_files:
+    - './rule.yml'
   # - "first.rules"
   # - "second.rules"
 
@@ -26,14 +27,23 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: 'truecommand'
+  - job_name: 'pushgateway'
     static_configs:
-      - targets: ['172.20.18.113:9091']
+      - targets: ['localhost:9091']
       
   - job_name: 'grafana'
     static_configs:
-      - targets: ['172.20.18.113:3000']
+      - targets: ['localhost:3000']
       
   - job_name: 'cadvisor'
     static_configs:
-      - targets: ['172.20.18.113:9000']
+      - targets: ['localhost:9000']
+  - job_name: 'node'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9100']
+      
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets: ['localhost:9093']
